@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{page.title}}{% endblock %}
+{% block content %}
+<style>.evento-detalle{margin:auto;display:block;padding-top:.4rem;padding-bottom:.4rem}
+.evento-data{padding-left:4.5rem;padding-top:.4rem;}</style>
+
+<main role="main">
+  <div class="container">
+    <h2 class="section-heading mb-4">{{evento.nombre}} - ({{evento.fechaEvento}})</h2>
+    <div class="row">
+      <div class="col-sm-4" style="background-color:yellow;">
+        <img src="{{evento.foto.url}}" class="img-fluid evento-detalle">
+      </div>
+      <div class="col-sm-8" style="background-color:pink;">
+        {{evento.descripcion|safe}}
+        {% if evento.link %}
+          <p><a href="{{evento.link}}" target="_blank">{{evento.link}}</a></p>
+        {% endif %}
+        {% if request.user.id == evento.usuario.id %}
+          <p><a href="{% url 'eventos:update' evento.id %}">Editar</a></p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

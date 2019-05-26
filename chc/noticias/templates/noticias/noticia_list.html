@@ -1,0 +1,98 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Noticias{% endblock %}
+{% block content %}
+<style>
+.noticia-avatar{margin:auto;display:block;width:12rem;height:12rem;padding-top:.4rem}
+.noticia-data-list{
+  line-height: 1; text-align:center; 
+  box-shadow: 5px 5px 5px 0px rgba(97,96,95,1); background-color:silver;}
+.noticia-filtros{line-height: 1; box-shadow: 5px 5px 5px 0px rgba(97,96,95,1); background-color:white;}
+</style>
+
+<main role="main">
+  <div class="container mb-4" style="font-size:14px">
+    <div class="row mt-1">
+      <div class="col-md-2" > <!--Filtros-->
+        <div class="row">
+          <div class="col-md-12" style="background-color:silver;">
+            <b style="font-size:16px">FILTROS</b>
+          </div>
+        </div>
+        <form action="" method="get">
+          <div class="row">
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.usuario.label_tag }}
+              {{ filter.form.usuario}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.provincia.label_tag }}
+              {{ filter.form.provincia}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.tiponoticia.label_tag }}
+              {{ filter.form.tiponoticia}}
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span> Buscar
+          </button>
+          <p></p>
+          </form>
+          {% if request.user.is_authenticated %}
+          <div class="row mb-2" style="background-color:silver;">
+            <div class="col-sm-4 col-md-3" >
+              <b style="font-size:16px">FUNCIONES</b>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-sm-4 col-md-3">
+              <a class="btn btn-primary" href="{% url 'noticias:create' %}"><i>Añadir noticia</i></a>
+            </div>
+          </div>
+          {% endif %}
+      </div> <!--Filtros-->
+      <div class="col-md-10 mx-auto"> <!--Datos-->
+        <div class="row">
+          <div class="col-md-12" style="background-color:silver; text-align:center;">
+            <b style="font-size:16px">Se encontraron {{ page_obj.paginator.count }} noticias</b>
+          </div>
+        </div>
+        <div class="row"> <!--Paginación-->
+          <div class="col-md-12" >
+            {% include 'core/includes/paginacion.html' %}
+          </div>
+        </div> <!--Paginación-->
+        <div class="row">
+          {% for noticia in object_list|dictsort:"id" reversed %}  <!--Nombre del objeto a recorrer en la lista-->
+            <div class="col-md-3 mt-2 mb-3 ">
+              <div class="row p-1" >
+                <div class="col-md-12 noticia-data-list" >
+                  {% if noticia.foto %}
+                    <!--<p>FOTO SI</p>-->
+                    <img src="{{noticia.foto.url}}" class="img-fluid noticia-avatar">
+                  {% else %}
+                    <p>FOTO NO</p>
+                  {% endif %}
+                  <h3 class="mb-3">{{noticia.fechaNoticia|date:"SHORT_DATE_FORMAT"}}</h3>
+                  <p>{{noticia.nombre}}</p>
+                  <p><a href="{% url 'noticias:noticia' noticia.id noticia.nombre|slugify %}">Leer más</a>
+                  {% if request.user.id == noticia.usuario.id %}
+                    | <a href="{% url 'noticias:update' noticia.id %}">Editar</a>
+                    | <a href="{% url 'noticias:delete' noticia.id %}">Borrar</a>
+                  {% endif %}
+                  </p> 
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div> 
+  </div>
+</main>
+{% endblock %}

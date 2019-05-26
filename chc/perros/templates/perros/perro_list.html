@@ -1,0 +1,111 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Perros{% endblock %}
+{% block content %}
+
+<style>
+.perro-avatar{margin:auto;display:block;width:12rem;height:12rem;padding-top:.4rem}
+.perro-data-list{line-height: 1; text-align:center; box-shadow: 5px 5px 5px 0px rgba(97,96,95,1)}
+.perro-filtros{line-height: 1; box-shadow: 5px 5px 5px 0px rgba(97,96,95,1); background-color:white;}
+</style>
+
+<main role="main" >
+  <div class="container mb-2" >
+    <div class="row mt-1" style="font-size:14px"> <!-- Caja datos -->
+      <div class="col-md-2" > <!--Filtros-->
+        <div class="row">
+          <div class="col-md-12" style="background-color:silver;">
+            <b style="font-size:16px">FILTROS</b>
+          </div>
+        </div>
+        <form action="" method="get">
+          <div class="row">
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.usuario.label_tag }}
+              {{ filter.form.usuario}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.provincia.label_tag }}
+              {{ filter.form.provincia}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.sexo.label_tag }}
+              {{ filter.form.sexo}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.size.label_tag }}
+              {{ filter.form.size}}
+            </div>
+          </div>      
+          <!--{{ filter.form.as_p }}-->
+          <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span> Buscar
+          </button>
+          <p></p>
+          </form>
+          {% if request.user.is_authenticated %}
+          <div class="row mb-2" style="background-color:silver;">
+            <div class="col-sm-4 col-md-3" >
+              <b style="font-size:16px">FUNCIONES</b>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-sm-4 col-md-3">
+              <a class="btn btn-primary" href="{% url 'perros:create' %}"><i>Añadir perro</i></a>
+            </div>
+          </div>
+          {% endif %}
+      </div> <!--Filtros-->
+      <div class="col-md-10 mx-auto"> <!--Datos-->
+        <div class="row">
+          <div class="col-md-12" style="background-color:silver; text-align:center;">
+            <b style="font-size:16px">Se encontraron {{ page_obj.paginator.count }} perros</b>
+          </div>
+        </div>
+        <div class="row"> <!--Paginación-->
+          <div class="col-md-12">
+            {% include 'core/includes/paginacion.html' %}
+          </div>
+        </div> <!--Paginación-->
+          <div class="row">
+          {% for perro in object_list|dictsort:"updated" reversed %}  
+            <div class="col-md-3 mb-.5">
+              <div class="row p-1">
+                {% if perro.sexo == "H" %}
+                  <div class="col-md-12 perro-data-list" style="background-color:lightpink;">
+                {% else %}
+                  <div class="col-md-12 perro-data-list" style="background-color:lightskyblue;">
+                {% endif %}
+                    <!--<img src="{{perro.foto.url}}" class="img-thumbnail" class="img-fluid profile-avatar">-->
+                    {% if perro.foto %}
+                      <!--<p>FOTO SI</p>-->
+                      <a href="{% url 'perros:perro' perro.id perro.nombre|slugify %}">
+                        <img src="{{perro.foto.url}}" class="img-fluid perro-avatar"></a>
+                    {% else %}
+                      <p>FOTO NO</p>
+                    {% endif %}
+                    <h4 class="mb-3"><b>{{perro.nombre}} - ({{perro.nacimiento}})</b></h4>
+                    <p>{{perro.get_sexo_display}} - {{perro.color}}</p>
+                    <p>{{perro.raza}} - {{perro.size}} ({{perro.get_size_display}})</p>
+                    <p><a href="{% url 'perros:perro' perro.id perro.nombre|slugify %}">Leer más</a>
+                    {% if request.user.id == perro.usuario.id %}
+                      | <a href="{% url 'perros:update' perro.id %}">Editar</a>
+                      | <a href="{% url 'perros:delete' perro.id %}">Borrar</a>
+                    {% endif %}
+                    </p> 
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div> <!--Datos-->
+    </div> <!-- Caja datos -->
+  </div>
+</main>
+{% endblock %}

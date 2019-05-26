@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    {% load static %}
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
+    <!-- Estilos -->
+    <link href="{% static 'core/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'core/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'core/css/main.css' %}" rel="stylesheet">
+  </head>
+    <body>
+      <!-- Navegación -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'home' %}">CampusHomoCanis</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ned" aria-controls="ned" aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="ned">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item {% if request.path == '/perros/' %}active text-uppercase{% endif %}">
+                <a class="nav-link text-expanded" href="{% url 'perros:perros' %}">Perros</a>
+              </li>
+              <li class="nav-item {% if request.path == '/eventos/' %}active text-uppercase{% endif %}">
+                <a class="nav-link" href="{% url 'eventos:eventos' %}">Eventos</a>
+              </li>
+              <li class="nav-item {% if request.path == '/servicios/' %}active text-uppercase{% endif %}">
+                <a class="nav-link" href="{% url 'servicios:servicios' %}">Servicios</a>
+              </li>
+              <li class="nav-item {% if request.path == '/noticias/' %}active text-uppercase{% endif %}">
+                <a class="nav-link" href="{% url 'noticias:noticias' %}">Noticias</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav">
+              {% if not request.user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login' %}">Acceder</a>
+                </li>
+                <!--<li class="nav-item">
+                  <a class="nav-link" href="{% url 'signup' %}">Registro</a>
+                </li>-->
+              {% else %}
+                <!--<li class="nav-item">
+                  <a class="nav-link" href="{% url 'messenger:list' %}">Mensajes</a>
+                </li>-->
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'profile' %}">Perfil</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Salir: {{request.user.username}}</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- Contenido -->
+      {% block content %}{% endblock %}
+      
+      <!-- Pié de página -->
+      <footer class="footer text-faded text-center py-3">
+        <div class="container">
+          <p class="m-0">
+            {% if LINK_FACEBOOK %}
+              <a href="{{LINK_FACEBOOK}}" target="_blank" class="link">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            {% endif %}
+            {% if LINK_INSTAGRAM %}
+              <a href="{{LINK_INSTAGRAM}}" target="_blank" class="link">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            {% endif %}
+            {% if LINK_TWITTER %}
+              <a href="{{LINK_TWITTER}}" target="_blank" class="link">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            {% endif %}
+        </p>
+        <p class="m-0 mbt">
+          <!--<a href="sample.html" class="link">Política de privacidad</a> ·
+          <a href="sample.html" class="link">Aviso legal</a> ·
+          <a href="sample.html" class="link">Cookies</a>-->
+          <!-- Metodo utilizando template tags personales-->
+          {% load pages_extras %}
+          {% get_page_list as page_list %}
+          {% for page in page_list %}
+            <a href="{% url 'page' page.id page.title|slugify %}" class="link">{{page.title}}</a>{% if not forloop.last %} ·{%endif%}
+          {% endfor %}
+        </p>
+        <p class="m-0 mbt1">&copy; CampusHomoCanis {% now "Y"%}</p>
+      </div>
+    </footer>
+    
+    <!-- Javascript -->
+    <script src="{% static 'core/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'core/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'core/js/main.js' %}"></script>
+  </body>
+</html>

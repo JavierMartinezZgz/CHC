@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{page.title}}{% endblock %}
+{% block content %}
+<style>.noticia-detalle{margin:auto;display:block;padding-top:.4rem;padding-bottom:.4rem}
+.noticia-data{padding-left:4.5rem;padding-top:.4rem;}</style>
+
+<main role="main">
+  <div class="container">
+    <h2 class="section-heading mb-4">{{noticia.nombre}} - ({{noticia.fechaNoticia}})</h2>
+    <div class="row">
+      <div class="col-sm-4" style="background-color:yellow;">
+        <img src="{{noticia.foto.url}}" class="img-fluid noticia-detalle">
+      </div>
+      <div class="col-sm-8" style="background-color:pink;">
+        {{noticia.descripcion|safe}}
+        {% if noticia.link %}
+          <p><a href="{{noticia.link}}" target="_blank">{{noticia.link}}</a></p>
+        {% endif %}
+        {% if request.user.id == noticia.usuario.id %}
+          <p><a href="{% url 'noticias:update' noticia.id %}">Editar</a></p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
