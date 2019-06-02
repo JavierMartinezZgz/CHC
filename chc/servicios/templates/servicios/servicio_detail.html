@@ -7,15 +7,15 @@
 
 <main role="main">
   <div class="container">
-    <h2 class="section-heading mb-4">{{servicio.nombre}} - ({{servicio.tiposervicio}} - {{servicio.provincia}})</h2>
+    <h2 class="section-heading mb-4">{{servicio.nombre}} ({{servicio.tiposervicio}} - {{servicio.provincia}})</h2>
     <div class="row">
-      <div class="col-sm-4" style="background-color:yellow;">
+      <div class="col-sm-4">
         <img src="{{servicio.foto.url}}" class="img-fluid servicio-detalle">
       </div>
-      <div class="col-sm-8" style="background-color:pink;">
+      <div class="col-sm-8">
         {{servicio.descripcion|safe}}
         {% if servicio.link %}
-          <p><a href="{{servicio.link}}" target="_blank">{{servicio.link}}</a></p>
+          <p>Contacto: <a href="{{servicio.link}}" target="_blank">{{servicio.link}}</a></p>
         {% endif %}
         {% if request.user.id == servicio.usuario.id %}
           <p><a href="{% url 'servicios:update' servicio.id %}">Editar</a></p>

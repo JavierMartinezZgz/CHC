@@ -7,17 +7,19 @@
 
 <main role="main">
   <div class="container">
-    <h2 class="section-heading mb-4">{{perro.nombre}} ({{perro.nacimiento}}) - {{perro.usuario}} {{perro.provincia}}</h2>
+    <h2 class="section-heading mb-4"><strong>{{perro.nombre}} ({{perro.nacimiento}}) - {{perro.usuario}} - {{perro.provincia}}</strong></h2>
     <div class="row">
-      <div class="col-sm-4" style="background-color:yellow;">
+      <!--<div class="col-sm-4" style="background-color:yellow;">-->
+      <div class="col-sm-4">
         <img src="{{perro.foto.url}}" class="img-fluid perro-detalle">
       </div>
-      <div class="col-sm-8" style="background-color:pink;">
-        <p>{{perro.get_sexo_display}} - {{perro.color}}</p>
-        <p>{{perro.raza}} - {{perro.size}} ({{perro.get_size_display}})</p>
-        {{perro.descripcion|safe}}
+      <!--<div class="col-sm-8" style="background-color:pink;">-->
+      <div class="col-sm-8">
+        <p><i>Actualizado: {{perro.updated|date:"d-m-Y"}}</i></p>
+        <p>{{perro.get_sexo_display}} - {{perro.color}} - {{perro.raza}} - {{perro.size}} ({{perro.get_size_display}})</p>
+        <p>{{perro.descripcion|safe}}</p>
         {% if perro.link %}
-          <p><a href="{{perro.link}}" target="_blank">{{perro.link}}</a></p>
+          <p><br>Contacto: <a href="{{perro.link}}" target="_blank">{{perro.link}}</a></p>
         {% endif %}
         {% if request.user.id == perro.usuario.id %}
           <p><a href="{% url 'perros:update' perro.id %}">Editar</a></p>

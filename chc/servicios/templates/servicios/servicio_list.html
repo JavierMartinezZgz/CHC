@@ -68,21 +68,22 @@
           </div>
         </div> <!--Paginación-->
         <div class="row">
-          {% for servicio in object_list|dictsort:"id" reversed %}  <!--Nombre del objeto a recorrer en la lista-->
+          {% for servicio in object_list|dictsort:"updated" reversed %}  <!--Nombre del objeto a recorrer en la lista-->
             <div class="col-md-3 mt-2 mb-3 ">
               <div class="row p-1" >
                 <div class="col-md-12 servicio-data-list" >
                   {% if servicio.foto %}
                     <!--<p>FOTO SI</p>-->
-                    <img src="{{servicio.foto.url}}" class="img-fluid servicio-avatar">
+                    <a href="{% url 'servicios:servicio' servicio.id servicio.nombre|slugify %}">
+                    <img src="{{servicio.foto.url}}" class="img-fluid servicio-avatar"></a>
                   {% else %}
                     <p>FOTO NO</p>
                   {% endif %}
-                  <h3 class="mb-3">{{servicio.nombre}}</h3>
-                  <p>{{servicio.tiposervicio}}</p>
-                  <p><a href="{% url 'servicios:servicio' servicio.id servicio.nombre|slugify %}">Leer más</a>
+                  <h4 class="mb-2">{{servicio.nombre}}</h4>
+                  <p>{{servicio.tiposervicio}} ({{servicio.provincia}})</p>
+                  <p>
                   {% if request.user.id == servicio.usuario.id %}
-                    | <a href="{% url 'servicios:update' servicio.id %}">Editar</a>
+                    <a href="{% url 'servicios:update' servicio.id %}">Editar</a>
                     | <a href="{% url 'servicios:delete' servicio.id %}">Borrar</a>
                   {% endif %}
                   </p> 

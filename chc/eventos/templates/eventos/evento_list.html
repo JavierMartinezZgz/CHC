@@ -68,22 +68,23 @@
           </div>
         </div> <!--Paginación-->
         <div class="row">
-          {% for evento in object_list|dictsort:"id" reversed %}  <!--Nombre del objeto a recorrer en la lista-->
+          {% for evento in object_list|dictsort:"updated" reversed %}  <!--Nombre del objeto a recorrer en la lista-->
             <div class="col-md-3 mt-2 mb-3 ">
               <div class="row p-1" >
                 <div class="col-md-12 evento-data-list" >
                   {% if evento.foto %}
                     <!--<p>FOTO SI</p>-->
-                    <img src="{{evento.foto.url}}" class="img-fluid evento-avatar">
+                    <a href="{% url 'eventos:evento' evento.id evento.nombre|slugify %}">
+                    <img src="{{evento.foto.url}}" class="img-fluid evento-avatar"></a>
                   {% else %}
                     <p>FOTO NO</p>
                   {% endif %}
-                  <h3 class="mb-3">{{evento.fechaEvento|date:"SHORT_DATE_FORMAT"}}</h3>
+                  <h4 class="mb-2">{{evento.fechaEvento|date:"SHORT_DATE_FORMAT"}}</h4>
+                  <p>{{evento.tipoevento}} ({{evento.provincia}})</p>
                   <p>{{evento.nombre}}</p>
-                  <p><a href="{% url 'eventos:evento' evento.id evento.nombre|slugify %}">Leer más</a>
                   {% if request.user.id == evento.usuario.id %}
-                    | <a href="{% url 'eventos:update' evento.id %}">Editar</a>
-                    | <a href="{% url 'eventos:delete' evento.id %}">Borrar</a>
+                    <p><a href="{% url 'eventos:update' evento.id %}">Editar</a>
+                    | <a href="{% url 'eventos:delete' evento.id %}">Borrar</a></p>
                   {% endif %}
                   </p> 
                 </div>

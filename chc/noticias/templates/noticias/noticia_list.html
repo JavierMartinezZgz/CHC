@@ -74,15 +74,17 @@
                 <div class="col-md-12 noticia-data-list" >
                   {% if noticia.foto %}
                     <!--<p>FOTO SI</p>-->
-                    <img src="{{noticia.foto.url}}" class="img-fluid noticia-avatar">
+                    <a href="{% url 'noticias:noticia' noticia.id noticia.nombre|slugify %}">
+                    <img src="{{noticia.foto.url}}" class="img-fluid noticia-avatar"></a>
                   {% else %}
                     <p>FOTO NO</p>
                   {% endif %}
-                  <h3 class="mb-3">{{noticia.fechaNoticia|date:"SHORT_DATE_FORMAT"}}</h3>
+                  <h4 class="mb-3">{{noticia.fechaNoticia|date:"SHORT_DATE_FORMAT"}}</h4>
+                  <p>{{noticia.tiponoticia}} ({{noticia.provincia}})</p>
                   <p>{{noticia.nombre}}</p>
-                  <p><a href="{% url 'noticias:noticia' noticia.id noticia.nombre|slugify %}">Leer más</a>
+                  <p>
                   {% if request.user.id == noticia.usuario.id %}
-                    | <a href="{% url 'noticias:update' noticia.id %}">Editar</a>
+                    <a href="{% url 'noticias:update' noticia.id %}">Editar</a>
                     | <a href="{% url 'noticias:delete' noticia.id %}">Borrar</a>
                   {% endif %}
                   </p> 

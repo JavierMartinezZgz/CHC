@@ -7,15 +7,16 @@
 
 <main role="main">
   <div class="container">
-    <h2 class="section-heading mb-4">{{noticia.nombre}} - ({{noticia.fechaNoticia}})</h2>
+    <h2 class="section-heading mb-4">{{noticia.nombre}}</h2>
     <div class="row">
-      <div class="col-sm-4" style="background-color:yellow;">
+      <div class="col-sm-4">
         <img src="{{noticia.foto.url}}" class="img-fluid noticia-detalle">
       </div>
-      <div class="col-sm-8" style="background-color:pink;">
-        {{noticia.descripcion|safe}}
+      <div class="col-sm-8">
+        <p>{{noticia.provincia}} - {{noticia.fechaNoticia}}</p>
+        <p>{{noticia.descripcion|safe}}</p>
         {% if noticia.link %}
-          <p><a href="{{noticia.link}}" target="_blank">{{noticia.link}}</a></p>
+          <p>Más info: <a href="{{noticia.link}}" target="_blank">{{noticia.link}}</a></p>
         {% endif %}
         {% if request.user.id == noticia.usuario.id %}
           <p><a href="{% url 'noticias:update' noticia.id %}">Editar</a></p>

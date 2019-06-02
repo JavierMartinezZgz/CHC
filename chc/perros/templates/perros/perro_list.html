@@ -90,12 +90,13 @@
                     {% else %}
                       <p>FOTO NO</p>
                     {% endif %}
-                    <h4 class="mb-3"><b>{{perro.nombre}} - ({{perro.nacimiento}})</b></h4>
-                    <p>{{perro.get_sexo_display}} - {{perro.color}}</p>
-                    <p>{{perro.raza}} - {{perro.size}} ({{perro.get_size_display}})</p>
-                    <p><a href="{% url 'perros:perro' perro.id perro.nombre|slugify %}">Leer más</a>
+                    <h4 class="mb-2"><b>{{perro.nombre}}</b></h4>
+                    <p>{{perro.provincia}} - {{perro.nacimiento}}</p>
+                    <p>{{perro.raza}} ({{perro.get_size_display}})</p>
+                    <p><i>Actualizado: {{perro.updated|date:"d-m-Y"}}</i></p>
+                    <!--<p><a href="{% url 'perros:perro' perro.id perro.nombre|slugify %}">Leer más</a>-->
                     {% if request.user.id == perro.usuario.id %}
-                      | <a href="{% url 'perros:update' perro.id %}">Editar</a>
+                      <a href="{% url 'perros:update' perro.id %}">Editar</a>
                       | <a href="{% url 'perros:delete' perro.id %}">Borrar</a>
                     {% endif %}
                     </p> 
